@@ -6,10 +6,11 @@ using UnityEngine.InputSystem;
 public class PlayerControllerX : MonoBehaviour
 {
     public bool gameOver;
+    public bool inBounds;
 
     private float floatForce = 5;
     private float gravityModifier = 1.5f;
-    private Rigidbody playerRb;
+    private Rigidbody playerRb; 
 
     public ParticleSystem explosionParticle;
     public ParticleSystem fireworksParticle;
@@ -35,10 +36,21 @@ public class PlayerControllerX : MonoBehaviour
     void Update()
     {
         // While space is pressed and player is low enough, float up
-        if (Input.GetKeyDown(KeyCode.Space) && !gameOver)
+        if (Input.GetKeyDown(KeyCode.Space) && !gameOver && inBounds)
         {
             playerRb.AddForce(Vector3.up * floatForce, ForceMode.Impulse);
         }
+        if (transform.position.y > 13)
+        {
+            inBounds = false;
+        }
+        
+        else if(transform.position.y <= 13)
+        {
+            inBounds = true;
+        }
+
+       
     }
 
     private void OnCollisionEnter(Collision other)
